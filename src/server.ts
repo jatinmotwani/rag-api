@@ -1,26 +1,12 @@
-import express from "express";
-import { prisma } from "./db";
+import "dotenv/config";
+import { createApp } from "./app";
+import { config } from "./config";
 
-export function createServer() {
-  const app = express();
-  app.use(express.json({ limit: "5mb" }));
-
-  app.get("/health", async (_req, res) => {
-    await prisma.$queryRaw`SELECT 1;`;
-    res.json({ ok: true });
+function startServer() {
+  const app = createApp();
+  app.listen(config.port, config.host, () => {
+    console.log(`API listening on http://${config.host}:${config.port}`);
   });
-
-  app.get("/v1/documents", (_req, res) => {
-    res.json({ items: [] });
-  });
-
-  app.post("/v1/documents", (_req, res) => {
-    res.status(501).json({ error: "Not implemented yet" });
-  });
-
-  app.post("/v1/query", (_req, res) => {
-    res.status(501).json({ error: "Not implemented yet" });
-  });
-
-  return app;
 }
+
+startServer();

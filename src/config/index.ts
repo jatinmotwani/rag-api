@@ -18,7 +18,14 @@ export const config = {
   embedDim: numberFromEnv("EMBED_DIM", 768),
   ollama: {
     host: process.env.OLLAMA_HOST ?? "http://localhost:11434",
-    embedModel: process.env.OLLAMA_EMBED_MODEL ?? "SET_ME",
-    chatModel: process.env.OLLAMA_CHAT_MODEL ?? "SET_ME",
+    embedModel: process.env.OLLAMA_EMBED_MODEL ?? "nomic-embed-text",
+    chatModel:
+      process.env.OLLAMA_CHAT_MODEL ?? "llama3.1:8b-instruct-q4_K_M",
+  },
+  ocr: {
+    enabled: (process.env.OCR_ENABLED ?? "false").toLowerCase() === "true",
+    minCharsPerPage: numberFromEnv("OCR_MIN_CHARS_PER_PAGE", 50),
+    lang: process.env.OCR_LANG ?? "eng",
+    dpi: numberFromEnv("OCR_DPI", 300),
   },
 };

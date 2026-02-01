@@ -21,6 +21,8 @@ model Document {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   chunks Chunk[]
+
+  @@map("documents")
 }
 
 model Chunk {
@@ -37,6 +39,8 @@ model Chunk {
   createdAt      DateTime @default(now()) @map("created_at")
 
   embedding Embedding?
+
+  @@map("chunks")
 }
 
 model Embedding {
@@ -44,6 +48,8 @@ model Embedding {
   chunk     Chunk    @relation(fields: [chunkId], references: [id], onDelete: Cascade)
   vector    Unsupported("vector(768)")
   createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("embeddings")
 }
 
 model Query {
@@ -56,4 +62,6 @@ model Query {
   promptTokens     Int?     @map("prompt_tokens")
   completionTokens Int?     @map("completion_tokens")
   createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("queries")
 }
