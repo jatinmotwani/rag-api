@@ -15,6 +15,7 @@ questions with citations.
 ## Technology Choices (Default, Local)
 - Runtime: Node.js + TypeScript (can swap to Python).
 - Database: PostgreSQL 16 + pgvector.
+- ORM: Prisma.
 - Model runner: Ollama.
 - Embeddings: local embedding model from Ollama.
 - Answer model: local chat model from Ollama.

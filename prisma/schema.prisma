@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Document {
+  id        String   @id @default(uuid()) @db.Uuid
+  filename  String
+  fileType  String   @map("file_type")
+  fileSize  Int      @map("file_size")
+  status    String   @default("uploaded")
+  localPath String   @map("local_path")
+  checksum  String
+  pageCount Int?     @map("page_count")
+  metadata  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  chunks Chunk[]
+}
+
+model Chunk {
+  id             String   @id @default(uuid()) @db.Uuid
+  documentId     String   @db.Uuid @map("document_id")
+  document       Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  pageNumber     Int?     @map("page_number")
+  chunkIndex     Int      @map("chunk_index")
+  text           String
+  tokenCount     Int?     @map("token_count")
+  startOffset    Int?     @map("start_offset")
+  endOffset      Int?     @map("end_offset")
+  embeddingModel String?  @map("embedding_model")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  embedding Embedding?
+}
+
+model Embedding {
+  chunkId   String   @id @db.Uuid @map("chunk_id")
+  chunk     Chunk    @relation(fields: [chunkId], references: [id], onDelete: Cascade)
+  vector    Unsupported("vector(768)")
+  createdAt DateTime @default(now()) @map("created_at")
+}
+
+model Query {
+  id               String   @id @default(uuid()) @db.Uuid
+  question         String
+  answer           String?
+  model            String?
+  topK             Int?     @map("top_k")
+  latencyMs        Int?     @map("latency_ms")
+  promptTokens     Int?     @map("prompt_tokens")
+  completionTokens Int?     @map("completion_tokens")
+  createdAt        DateTime @default(now()) @map("created_at")
+}

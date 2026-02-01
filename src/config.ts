@@ -13,13 +13,8 @@ function numberFromEnv(name: string, fallback: number): number {
 export const config = {
   host: process.env.HOST ?? "127.0.0.1",
   port: numberFromEnv("PORT", 3000),
-  db: {
-    host: process.env.DB_HOST ?? "127.0.0.1",
-    port: numberFromEnv("DB_PORT", 5432),
-    user: process.env.DB_USER ?? "rag",
-    password: process.env.DB_PASSWORD ?? "rag",
-    database: process.env.DB_NAME ?? "rag",
-  },
+  databaseUrl:
+    process.env.DATABASE_URL ?? "postgresql://rag:rag@127.0.0.1:5432/rag",
   embedDim: numberFromEnv("EMBED_DIM", 768),
   ollama: {
     host: process.env.OLLAMA_HOST ?? "http://localhost:11434",
